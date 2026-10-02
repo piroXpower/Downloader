@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Flappy Wing 2.0</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    body {
+      background: #090d16;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      touch-action: manipulation;
+    }
+    #game-canvas {
+      background: linear-gradient(to bottom, #111e38, #1e3a5f);
+      border: 2px solid #30363d;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      width: 90vw;
+      max-width: 360px;
+      height: 75vh;
+      max-height: 580px;
+      display: block;
+    }
+    .hud {
+      display: flex;
+      justify-content: space-between;
+      width: 90vw;
+      max-width: 360px;
+      margin-bottom: 8px;
+    }
+    .score-badge {
+      background: #161b22;
+      border: 1px solid #30363d;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      color: #00f2fe;
+    }
+    .hint {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #8b949e;
+    }
+  </style>
+</head>
+<body>
+  <div class="hud">
+    <div class="score-badge">Score: <span id="score-display">0</span></div>
+    <div class="score-badge">Best: <span id="best-display">0</span></div>
+  </div>
+  <canvas id="game-canvas"></canvas>
+  <div class="hint">Tap anywhere or press Space to Flap</div>
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+    if (tg) tg.expand();
+
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set internal resolution
+    canvas.width = 360;
+    canvas.height = 580;
+
+    let bird = { x: 80, y: 250, radius: 14, vy: 0, gravity: 0.35, jump: -6.5 };
+    let pipes = [];
+    let score = 0;
+    let best = parseInt(localStorage.getItem('flappy_best') || '0', 10);
+    document.getElementById('best-display').innerText = best;
+
+    let gameState = 'START'; // START, PLAYING, GAMEOVER
+    let frame = 0;
+    const pipeGap = 135;
+    const pipeWidth = 52;
+    const pipeSpeed = 2.4;
+
+    function reset() {
+      bird.y = 250;
+      bird.vy = 0;
+      pipes = [];
+      score = 0;
+      frame = 0;
+      document.getElementById('score-display').innerText = '0';
+    }
+
+    function flap() {
+      if (gameState === 'START') {
+        gameState = 'PLAYING';
+      } else if (gameState === 'PLAYING') {
+        bird.vy = bird.jump;
+        if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+      } else if (gameState === 'GAMEOVER') {
+        reset();
+        gameState = 'PLAYING';
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') { e.preventDefault(); flap(); }
+    });
+    window.addEventListener('pointerdown', (e) => {
+      flap();
+    });
+
+    function spawnPipe() {
+      const topHeight = Math.floor(Math.random() * (canvas.height - pipeGap - 120)) + 40;
+      pipes.push({
+        x: canvas.width,
+        top: topHeight,
+        bottom: topHeight + pipeGap,
+        passed: false
+      });
+    }
+
+    function update() {
+      frame++;
+      if (gameState === 'PLAYING') {
+        bird.vy += bird.gravity;
+        bird.y += bird.vy;
+
+        // Ground / Ceiling collision
+        if (bird.y + bird.radius >= canvas.height - 20 || bird.y - bird.radius <= 0) {
+          gameOver();
+        }
+
+        // Spawn pipes
+        if (frame % 90 === 0) spawnPipe();
+
+        // Move pipes
+        for (let i = pipes.length - 1; i >= 0; i--) {
+          const p = pipes[i];
+          p.x -= pipeSpeed;
+
+          // Check pass
+          if (!p.passed && p.x + pipeWidth < bird.x) {
+            p.passed = true;
+            score++;
+            document.getElementById('score-display').innerText = score;
+            if (score > best) {
+              best = score;
+              localStorage.setItem('flappy_best', best);
+              document.getElementById('best-display').innerText = best;
+            }
+          }
+
+          // Check collision
+          if (
+            bird.x + bird.radius > p.x &&
+            bird.x - bird.radius < p.x + pipeWidth &&
+            (bird.y - bird.radius < p.top || bird.y + bird.radius > p.bottom)
+          ) {
+            gameOver();
+          }
+
+          if (p.x + pipeWidth < 0) {
+            pipes.splice(i, 1);
+          }
+        }
+      }
+    }
+
+    function gameOver() {
+      gameState = 'GAMEOVER';
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+      window.parent.postMessage({
+        type: 'SCORE_UPDATE',
+        gameId: 'game-flappy',
+        score: score
+      }, '*');
+    }
+
+    function draw() {
+      // Clear background
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Stars in sky
+      ctx.fillStyle = '#38bdf8';
+      for (let i = 0; i < 20; i++) {
+        const sx = (i * 37 + frame * 0.2) % canvas.width;
+        const sy = (i * 29) % 300;
+        ctx.fillRect(sx, sy, 2, 2);
+      }
+
+      // Draw pipes
+      pipes.forEach(p => {
+        // Gradient pipe
+        const gradTop = ctx.createLinearGradient(p.x, 0, p.x + pipeWidth, 0);
+        gradTop.addColorStop(0, '#22c55e');
+        gradTop.addColorStop(1, '#15803d');
+        ctx.fillStyle = gradTop;
+        ctx.fillRect(p.x, 0, pipeWidth, p.top);
+        ctx.strokeStyle = '#86efac';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(p.x, 0, pipeWidth, p.top);
+
+        const gradBottom = ctx.createLinearGradient(p.x, p.bottom, p.x + pipeWidth, p.bottom);
+        gradBottom.addColorStop(0, '#22c55e');
+        gradBottom.addColorStop(1, '#15803d');
+        ctx.fillStyle = gradBottom;
+        ctx.fillRect(p.x, p.bottom, pipeWidth, canvas.height - p.bottom);
+        ctx.strokeRect(p.x, p.bottom, pipeWidth, canvas.height - p.bottom);
+      });
+
+      // Ground
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(0, canvas.height - 20, canvas.width, 20);
+      ctx.fillStyle = '#22c55e';
+      ctx.fillRect(0, canvas.height - 20, canvas.width, 3);
+
+      // Draw Bird
+      ctx.save();
+      ctx.translate(bird.x, bird.y);
+      let angle = Math.min(Math.PI / 4, Math.max(-Math.PI / 4, (bird.vy * 0.1)));
+      ctx.rotate(angle);
+      
+      // Bird body
+      ctx.beginPath();
+      ctx.arc(0, 0, bird.radius, 0, Math.PI * 2);
+      ctx.fillStyle = '#eab308';
+      ctx.fill();
+      ctx.strokeStyle = '#ca8a04';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Eye
+      ctx.beginPath();
+      ctx.arc(5, -4, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(7, -4, 2, 0, Math.PI * 2);
+      ctx.fillStyle = '#000000';
+      ctx.fill();
+
+      // Beak
+      ctx.fillStyle = '#f97316';
+      ctx.beginPath();
+      ctx.moveTo(8, -1);
+      ctx.lineTo(16, 2);
+      ctx.lineTo(8, 5);
+      ctx.closePath();
+      ctx.fill();
+
+      // Wing
+      ctx.fillStyle = '#facc15';
+      ctx.beginPath();
+      ctx.ellipse(-4, 2, 6, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+
+      // UI Overlays
+      if (gameState === 'START') {
+        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 24px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('FLAPPY WING 2.0', canvas.width / 2, 220);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '16px sans-serif';
+        ctx.fillText('Tap to Start Flapping!', canvas.width / 2, 260);
+      } else if (gameState === 'GAMEOVER') {
+        ctx.fillStyle = 'rgba(0,0,0,0.65)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#ef4444';
+        ctx.font = 'bold 28px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('GAME OVER', canvas.width / 2, 220);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '18px sans-serif';
+        ctx.fillText('Score: ' + score, canvas.width / 2, 260);
+        ctx.fillText('Best: ' + best, canvas.width / 2, 290);
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 16px sans-serif';
+        ctx.fillText('Tap to Try Again', canvas.width / 2, 340);
+      }
+    }
+
+    function loop() {
+      update();
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  </script>
+</body>
+</html>

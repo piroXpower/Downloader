@@ -1,0 +1,9 @@
+Task: f2a73f6c-1572-400c-a8c0-ee7541a73c51/task-102
+Status: DONE
+Log: /root/.gemini/antigravity-cli/brain/f2a73f6c-1572-400c-a8c0-ee7541a73c51/.system_generated/tasks/task-102.log
+Log output:
+TgCrypto is missing! Pyrogram will work the same, but at a much slower speed. More info: https://docs.pyrogram.org/topics/speedups
+Pyrogram: 2.0.106
+PyTgCalls: 3.0.0
+
+Last progress: 6s ago

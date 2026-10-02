@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Game Runner</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    body {
+      background: #090d16;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      touch-action: none;
+    }
+    .header {
+      width: 90vw;
+      max-width: 380px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .game-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #38bdf8;
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .score-badge {
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #10b981;
+    }
+    #game-canvas {
+      background: #0d131f;
+      border: 2px solid #1e293b;
+      border-radius: 14px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      width: 90vw;
+      max-width: 380px;
+      height: 72vh;
+      max-height: 520px;
+      display: block;
+    }
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+      width: 90vw;
+      max-width: 380px;
+    }
+    .c-btn {
+      flex: 1;
+      padding: 12px;
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #38bdf8;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .c-btn:active { background: #38bdf8; color: #000; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="game-name" id="game-title">Arcade Game</div>
+    <div class="score-badge">SCORE: <span id="score">0</span></div>
+  </div>
+  <canvas id="game-canvas"></canvas>
+  <div class="controls">
+    <button class="c-btn" id="btn-left">◀</button>
+    <button class="c-btn" id="btn-jump">JUMP ⚡</button>
+    <button class="c-btn" id="btn-right">▶</button>
+  </div>
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+    if (tg) tg.expand();
+
+    const params = new URLSearchParams(window.location.search);
+    const gameId = params.get('id') || 'game-unknown';
+    const gameTitle = params.get('title') || 'Arcade Adventure';
+    const category = params.get('cat') || 'Arcade';
+
+    document.getElementById('game-title').innerText = gameTitle;
+
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 380;
+    canvas.height = 520;
+
+    // Theme color based on category
+    const catColors = {
+      'Arcade': '#06b6d4',
+      'Puzzle': '#8b5cf6',
+      'Action': '#ef4444',
+      'Racing': '#f97316',
+      'Sports': '#10b981',
+      'Retro': '#ec4899',
+      'Cards & Board': '#3b82f6',
+      'Casual': '#eab308'
+    };
+    const mainColor = catColors[category] || '#38bdf8';
+
+    let player = { x: 170, y: 400, vx: 0, vy: 0, w: 26, h: 26, jumping: false };
+    let obstacles = [];
+    let gems = [];
+    let particles = [];
+    let score = 0;
+    let speed = 4;
+    let frame = 0;
+    let gameOver = false;
+
+    function resetGame() {
+      player.x = 170;
+      player.y = 400;
+      player.vx = 0;
+      player.vy = 0;
+      player.jumping = false;
+      obstacles = [];
+      gems = [];
+      score = 0;
+      speed = 4;
+      frame = 0;
+      gameOver = false;
+      document.getElementById('score').innerText = '0';
+    }
+
+    // Touch and Keyboard inputs
+    let moveLeft = false, moveRight = false;
+    document.getElementById('btn-left').onpointerdown = () => moveLeft = true;
+    document.getElementById('btn-left').onpointerup = () => moveLeft = false;
+    document.getElementById('btn-right').onpointerdown = () => moveRight = true;
+    document.getElementById('btn-right').onpointerup = () => moveRight = false;
+    document.getElementById('btn-jump').onpointerdown = doJump;
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') moveLeft = true;
+      if (e.key === 'ArrowRight') moveRight = true;
+      if (e.key === 'ArrowUp' || e.code === 'Space') doJump();
+    });
+    window.addEventListener('keyup', e => {
+      if (e.key === 'ArrowLeft') moveLeft = false;
+      if (e.key === 'ArrowRight') moveRight = false;
+    });
+
+    function doJump() {
+      if (!player.jumping && !gameOver) {
+        player.vy = -12;
+        player.jumping = true;
+        if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+      } else if (gameOver) {
+        resetGame();
+      }
+    }
+
+    function update() {
+      if (gameOver) return;
+      frame++;
+
+      if (moveLeft) player.x = Math.max(10, player.x - 6);
+      if (moveRight) player.x = Math.min(canvas.width - player.w - 10, player.x + 6);
+
+      // Gravity
+      player.vy += 0.65;
+      player.y += player.vy;
+      if (player.y >= 400) {
+        player.y = 400;
+        player.vy = 0;
+        player.jumping = false;
+      }
+
+      // Spawning obstacles
+      if (frame % 50 === 0) {
+        obstacles.push({
+          x: Math.random() * (canvas.width - 50) + 10,
+          y: -30,
+          w: Math.random() * 20 + 20,
+          h: 20
+        });
+      }
+
+      // Spawning gems
+      if (frame % 35 === 0) {
+        gems.push({
+          x: Math.random() * (canvas.width - 30) + 10,
+          y: -20,
+          r: 8
+        });
+      }
+
+      // Move obstacles
+      for (let i = obstacles.length - 1; i >= 0; i--) {
+        const obs = obstacles[i];
+        obs.y += speed;
+
+        // Collision check
+        if (
+          player.x < obs.x + obs.w &&
+          player.x + player.w > obs.x &&
+          player.y < obs.y + obs.h &&
+          player.y + player.h > obs.y
+        ) {
+          triggerGameOver();
+          return;
+        }
+
+        if (obs.y > canvas.height + 20) {
+          obstacles.splice(i, 1);
+          score += 5;
+          document.getElementById('score').innerText = score;
+        }
+      }
+
+      // Move gems
+      for (let i = gems.length - 1; i >= 0; i--) {
+        const g = gems[i];
+        g.y += speed;
+
+        if (Math.hypot((player.x + player.w / 2) - g.x, (player.y + player.h / 2) - g.y) < player.w / 2 + g.r) {
+          gems.splice(i, 1);
+          score += 25;
+          document.getElementById('score').innerText = score;
+          if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+          continue;
+        }
+
+        if (g.y > canvas.height + 20) gems.splice(i, 1);
+      }
+
+      // Increase speed gradually
+      if (frame % 300 === 0) speed = Math.min(10, speed + 0.5);
+    }
+
+    function triggerGameOver() {
+      gameOver = true;
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+      window.parent.postMessage({
+        type: 'SCORE_UPDATE',
+        gameId: gameId,
+        score: score
+      }, '*');
+    }
+
+    function draw() {
+      ctx.fillStyle = '#0b101b';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Cyber Grid Lines
+      ctx.strokeStyle = '#162032';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += 40) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+      }
+
+      // Ground Line
+      ctx.strokeStyle = mainColor;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(0, 426);
+      ctx.lineTo(canvas.width, 426);
+      ctx.stroke();
+
+      // Gems
+      ctx.fillStyle = '#38bdf8';
+      ctx.shadowColor = '#38bdf8';
+      ctx.shadowBlur = 10;
+      gems.forEach(g => {
+        ctx.beginPath();
+        ctx.arc(g.x, g.y, g.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Obstacles
+      ctx.fillStyle = '#f43f5e';
+      ctx.shadowColor = '#f43f5e';
+      ctx.shadowBlur = 8;
+      obstacles.forEach(o => {
+        ctx.fillRect(o.x, o.y, o.w, o.h);
+      });
+
+      // Player
+      ctx.fillStyle = mainColor;
+      ctx.shadowColor = mainColor;
+      ctx.shadowBlur = 15;
+      ctx.fillRect(player.x, player.y, player.w, player.h);
+      ctx.shadowBlur = 0;
+
+      // Game Over Screen
+      if (gameOver) {
+        ctx.fillStyle = 'rgba(0,0,0,0.7)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#ef4444';
+        ctx.font = 'bold 26px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('GAME OVER', canvas.width / 2, 210);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '18px sans-serif';
+        ctx.fillText('Score: ' + score, canvas.width / 2, 250);
+        ctx.fillStyle = mainColor;
+        ctx.font = 'bold 16px sans-serif';
+        ctx.fillText('Tap JUMP to Retry', canvas.width / 2, 300);
+      }
+    }
+
+    function loop() {
+      update();
+      draw();
+      requestAnimationFrame(loop);
+    }
+    loop();
+  </script>
+</body>
+</html>

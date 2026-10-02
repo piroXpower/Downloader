@@ -1,0 +1,217 @@
+I1002 13:15:55.703370      25 server.go:1586] Starting language server process with pid 30397
+I1002 13:15:55.713595      25 server.go:1637] Language server version: 1.2.14
+I1002 13:15:55.713702      25 server.go:617] Language server will attempt to listen on host localhost
+I1002 13:15:55.724383      25 server.go:632] Language server listening on random port at 42717 for HTTPS (gRPC)
+I1002 13:15:55.731393      25 server.go:640] Language server listening on random port at 44243 for HTTP
+W1002 13:15:56.942513     101 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:56.945670     101 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+E1002 13:15:56.957575     101 errorreport.go:224] Failed to poll ListExperiments: error getting token source: You are not logged into Antigravity.
+I1002 13:15:56.960247     101 model_configs.go:226] Auth mode is unspecified, skipping fetchAvailableModels and returning empty response
+W1002 13:15:57.065511     102 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.066068     102 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.067383     102 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.067679     102 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+I1002 13:15:57.077257     114 store_client.go:697] summary store: starting background reconciliation (trigger=empty_on_open)
+I1002 13:15:57.077568     114 store_client.go:726] summary store: reconcile func returned 0 records, skipping
+W1002 13:15:57.081834     114 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.082303     114 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.089730     114 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.090120     114 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.100991      25 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.101533      25 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.102824      25 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.102978      25 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.106856      25 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.106989      25 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.107731      25 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.108106      25 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.110454      25 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.110636      25 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.111244      25 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.111392      25 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.127317      25 defaults.go:706] failed to get cs path: cs path /usr/bin/cs invalid
+I1002 13:15:57.128988      25 manager.go:108] Creating trajectory store manager with proto store and SQLite store
+W1002 13:15:57.134375      25 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.134524      25 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.135041      25 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.135165      25 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+I1002 13:15:57.146067     149 manager.go:88] Migration [MIGRATION_ID_SIDECAR_USER_CONFIG_BYPASS] is disabled, skipping entirely
+I1002 13:15:57.146330     149 manager.go:91] Migration [MIGRATION_ID_SANITY_CHECK_PROJECT_URIS] is enabled
+I1002 13:15:57.149600     149 manager.go:100] Migration [MIGRATION_ID_SANITY_CHECK_PROJECT_URIS] already has status MIGRATION_STATUS_COMPLETED, skipping
+I1002 13:15:57.149705     149 manager.go:91] Migration [MIGRATION_ID_PLUGIN_ENABLEMENT] is enabled
+I1002 13:15:57.156826     149 manager.go:100] Migration [MIGRATION_ID_PLUGIN_ENABLEMENT] already has status MIGRATION_STATUS_COMPLETED, skipping
+I1002 13:15:57.156898     149 manager.go:91] Migration [MIGRATION_ID_BUILTIN_SIDECARS_TO_PLUGINS] is enabled
+I1002 13:15:57.159147     149 manager.go:100] Migration [MIGRATION_ID_BUILTIN_SIDECARS_TO_PLUGINS] already has status MIGRATION_STATUS_COMPLETED, skipping
+I1002 13:15:57.159206     149 manager.go:88] Migration [MIGRATION_ID_LIN_BUILTIN_TO_MARKETPLACE] is disabled, skipping entirely
+I1002 13:15:57.159229     149 manager.go:88] Migration [MIGRATION_ID_ADOPT_BWG_INSTALLS] is disabled, skipping entirely
+I1002 13:15:57.184771      25 server.go:3101] Auth succeeded, refreshing features and managers
+W1002 13:15:57.185091      25 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.185290      25 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.186329      25 errorreport.go:224] Failed to poll ListExperiments: error getting token source: You are not logged into Antigravity.
+I1002 13:15:57.186596      25 server.go:3108] State refresh took 1ms
+I1002 13:15:57.186641      25 server.go:3119] [RemoteControl] Subscription callback triggered.
+I1002 13:15:57.194509      25 server.go:3122] [RemoteControl] RemoteControlEnabled value: false
+I1002 13:15:57.194604      25 server.go:3818] [RemoteControl] Session toggle is off, staying disconnected
+I1002 13:15:57.194629      25 server.go:3525] [RemoteControl] Resolved proxyServerURL: ""
+I1002 13:15:57.195350      25 profiler.go:231] Continuous pprof profiling is disabled.
+I1002 13:15:57.195684     162 manager.go:88] Migration [MIGRATION_ID_SIDECAR_USER_CONFIG_BYPASS] is disabled, skipping entirely
+I1002 13:15:57.195779     162 manager.go:91] Migration [MIGRATION_ID_SANITY_CHECK_PROJECT_URIS] is enabled
+I1002 13:15:57.196795      81 reconcile_summaries.go:94] [Summaries] reconcile checked 0 conversations, restored 0, cached 0, skipped 0, dropped 0, cancelled false in 1ms (resident: 0 -> 0)
+W1002 13:15:57.197764      81 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+I1002 13:15:57.197411      25 server.go:2538] initialized server successfully in 1.491800384s
+E1002 13:15:57.197922      81 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.204028      81 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.204160      81 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+I1002 13:15:57.209909     162 manager.go:100] Migration [MIGRATION_ID_SANITY_CHECK_PROJECT_URIS] already has status MIGRATION_STATUS_COMPLETED, skipping
+I1002 13:15:57.209983     162 manager.go:91] Migration [MIGRATION_ID_PLUGIN_ENABLEMENT] is enabled
+I1002 13:15:57.211782       1 auto_updater.go:281] Last check was less than 15 minutes ago, skipping update (fast path)
+I1002 13:15:57.213416       1 common.go:153] Launching CLI mode
+E1002 13:15:57.213550       1 launchsteps.go:84] Failed to resolve GeminiDir ".gemini": .gemini must be an absolute path: path is not absolute, falling back to default
+I1002 13:15:57.213639       1 common.go:175] CLI app data directory: /root/.gemini/antigravity-cli
+I1002 13:15:57.213717       1 server.go:323] Creating CLI server backend: product=antigravity workspaceDirs=[/root] appDataDir=/root/.gemini/antigravity-cli cascadeManager=true codeAssist=true
+I1002 13:15:57.214901       1 composite_token_storage.go:123] Using file-based token storage because no D-Bus session bus detected
+I1002 13:15:57.215011       1 auth_provider.go:952] [AuthProvider] SetEnableBusinessLogin called with enable: true
+I1002 13:15:57.215059     162 manager.go:100] Migration [MIGRATION_ID_PLUGIN_ENABLEMENT] already has status MIGRATION_STATUS_COMPLETED, skipping
+I1002 13:15:57.215118     162 manager.go:91] Migration [MIGRATION_ID_BUILTIN_SIDECARS_TO_PLUGINS] is enabled
+W1002 13:15:57.221841      81 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.222060      81 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.222739      81 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.222882      81 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+I1002 13:15:57.223165     162 manager.go:100] Migration [MIGRATION_ID_BUILTIN_SIDECARS_TO_PLUGINS] already has status MIGRATION_STATUS_COMPLETED, skipping
+I1002 13:15:57.223249     162 manager.go:88] Migration [MIGRATION_ID_LIN_BUILTIN_TO_MARKETPLACE] is disabled, skipping entirely
+I1002 13:15:57.223277     162 manager.go:88] Migration [MIGRATION_ID_ADOPT_BWG_INSTALLS] is disabled, skipping entirely
+W1002 13:15:57.229210     156 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.229990     156 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.231011     156 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.231384     156 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+I1002 13:15:57.247612     196 store_client.go:697] summary store: starting background reconciliation (trigger=empty_on_open)
+W1002 13:15:57.248936      47 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.249126      47 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.249593     196 server.go:3039] Failed to read conversations directory /root/.gemini/antigravity/conversations: open /root/.gemini/antigravity/conversations: no such file or directory
+I1002 13:15:57.249809     196 server.go:2944] ListConversations returning 0 summaries
+I1002 13:15:57.249855     196 store_client.go:726] summary store: reconcile func returned 0 records, skipping
+W1002 13:15:57.250124      47 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.250229      47 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.250755      47 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.250850      47 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.251226      47 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.251313      47 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+I1002 13:15:57.254592       1 server.go:2175] Backend project ID updated dynamically to: default-cli-project
+I1002 13:15:57.255371       1 manager.go:448] Initializing CLI store manager for workspace /root
+W1002 13:15:57.263592       1 cli_setting_manager.go:364] cli settings not available, using defaults: failed to read cli settings: open /root/.gemini/antigravity-cli/settings.json: no such file or directory
+I1002 13:15:57.266414       1 cli_setting_manager.go:79] config.json not found or unreadable, using CLI settings only: open /root/.gemini/config/config.json: no such file or directory
+I1002 13:15:57.266556       1 cli_setting_manager.go:92] CLI settings initialized: permissions=<nil>, toolPermission=request-review
+W1002 13:15:57.267236      47 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.267350      47 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.267802      47 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.267893      47 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.268361     158 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.268501     158 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.268748     158 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.268822     158 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+I1002 13:15:57.283832       1 hooks_manager.go:53] loaded 0 named hooks from 0 hooks.json file(s)
+I1002 13:15:57.284018       1 manager.go:632] CLI store manager initialized successfully
+I1002 13:15:57.284073       1 common.go:300] CLI store manager created successfully
+I1002 13:15:57.284126       1 cli_setting_manager.go:218] ApplyProjectPermissionGrants: no grants for project "CLI Project", cleared project permissions
+I1002 13:15:57.287029     202 quota_manager.go:36] doRefreshQuota: skipped (not logged in)
+I1002 13:15:57.326273       1 detect.go:267] kitty graphics probe result: false (DA1 sentinel, no Kitty support)
+I1002 13:15:57.334704       1 terminal_info_manager.go:259] Terminal detection: TERM="xterm-256color" altScreen=true ssh=false osc8=true osc52=true appleTerminalSSH=false
+I1002 13:15:57.334850       1 common.go:448] Starting CLI program
+CLI ready for user input
+W1002 13:15:57.348360      47 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.348817      47 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.349634      47 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.349840      47 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.351175      47 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.351271      47 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.351453      47 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.351497      47 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.351827     228 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.351884     228 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.351990     228 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.352024     228 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+I1002 13:15:57.405697     254 manager.go:1333] Reloading system slash commands and skills
+I1002 13:15:57.406130     254 manager.go:1310] Reloading system slash commands
+I1002 13:15:57.406193     254 manager.go:1314] Slash commands unchanged, skipping update
+I1002 13:15:57.409404     249 gemini_extensions.go:28] Detecting Gemini extensions in /root/.gemini/extensions
+I1002 13:15:57.411804     249 gemini_extensions.go:49] No extensions found
+I1002 13:15:57.419614     262 keyring.go:51] keyringAuth: incomplete GCP onboarding (no userTier or projectID), treating as unauthenticated
+I1002 13:15:57.425548       1 analytics.go:189] CLI startup completed (took 1.730114077s)
+W1002 13:15:57.427137      47 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.427556      47 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:15:57.428131      47 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:15:57.428354      47 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+I1002 13:15:57.456773     234 manager.go:935] Full redraw completed (rerenderAll) for conversation  (epoch 0, items 1)
+I1002 13:16:45.927777       1 common.go:453] CLI program exited, shutting down
+E1002 13:16:45.929939       1 common.go:457] failed to truncate history: reading history file: open /root/.gemini/antigravity-cli/history.jsonl: no such file or directory
+I1002 13:16:45.932915     359 server.go:2960] Language server shutting down
+I1002 13:16:45.933004     359 server.go:2965] Waiting for migrations to complete to prevent partial migration state...
+W1002 13:16:45.933625     359 cache.go:135] Cache(loadCodeAssistResponse): Singleflight refresh failed: error getting token source: You are not logged into Antigravity.
+E1002 13:16:45.933819     359 errorreport.go:224] error getting token source: You are not logged into Antigravity.
+W1002 13:16:45.934385     359 cache.go:135] Cache(userInfo): Singleflight refresh failed: failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:16:45.934508     359 errorreport.go:224] failed to get load code assist response: error getting token source: You are not logged into Antigravity.
+E1002 13:16:45.938464     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.938677     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.938739     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.938792     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.938841     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.938890     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.938939     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.938987     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939054     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939104     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939152     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939199     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939316     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939374     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939424     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939472     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939519     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939567     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939614     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939661     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939720     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939768     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939816     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939862     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939910     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.939964     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940012     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940058     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940107     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940154     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940202     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940249     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940297     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940351     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940406     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940455     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940503     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940551     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940598     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940645     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940693     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940741     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940790     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940836     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940884     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.940932     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.941070     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.941126     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.941189     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.941240     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.941288     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.941335     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.941382     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.941679     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.941727     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.941751     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.941789     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.941822     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.941845     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.941869     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.941901     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.942509     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.942545     108 file_watcher.go:194] skipping empty or temp file: 
+E1002 13:16:45.942569     108 file_watcher.go:194] skipping empty or temp file: 
+I1002 13:16:46.426289       1 manager.go:808] CLI store manager shutting down

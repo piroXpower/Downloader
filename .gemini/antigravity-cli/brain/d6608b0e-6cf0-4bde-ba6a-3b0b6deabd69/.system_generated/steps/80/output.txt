@@ -1,0 +1,6 @@
+
+The command exited with code 0.
+Output:
+User stats after score: {'user_id': 999, 'username': '', 'first_name': 'FlappyKing', 'total_games_played': 1, 'total_score': 50, 'rank': 1, 'top_games': [{'game_id': 'game-flappy', 'best_score': 50}]}
+Global leaders: [{'user_id': 999, 'username': '', 'first_name': 'FlappyKing', 'total_score': 50, 'total_games_played': 1}]
+

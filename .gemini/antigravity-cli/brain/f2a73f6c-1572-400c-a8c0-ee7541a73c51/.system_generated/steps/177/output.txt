@@ -1,0 +1,5 @@
+
+The command exited with code 0.
+Output:
+GroupCallConfig init: (self, invite_hash: str | None = None, join_as: Any = None, auto_start: bool = True)
+

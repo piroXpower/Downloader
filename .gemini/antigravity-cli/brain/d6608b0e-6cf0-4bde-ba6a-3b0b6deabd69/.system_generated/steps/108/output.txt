@@ -1,0 +1,18 @@
+
+The command exited with code 0.
+Output:
+total 39
+drwxr-xr-x+  13 root root 3452 Oct  2 13:54 .
+drwxr-xr-x+   6 root root 3452 Oct  2 13:55 ..
+drwxr-xr-x+   2 root root 3452 Oct  2 13:51 2048
+drwxr-xr-x+   2 root root 3452 Oct  2 13:51 flappy
+drwxr-xr-x+   2 root root 3452 Oct  2 13:53 memory
+drwxr-xr-x+   2 root root 3452 Oct  2 13:52 pong
+drwxr-xr-x+   2 root root 3452 Oct  2 13:52 snake
+drwxr-xr-x+   2 root root 3452 Oct  2 13:52 space_blaster
+drwxr-xr-x+   2 root root 3452 Oct  2 13:54 speed_clicker
+drwxr-xr-x+   2 root root 3452 Oct  2 13:53 tetris
+drwxr-xr-x+   2 root root 3452 Oct  2 13:53 tictactoe
+drwxr-xr-x+   2 root root 3452 Oct  2 13:54 tower_stack
+drwxr-xr-x+   2 root root 3452 Oct  2 13:54 web_runner
+

@@ -1,0 +1,7 @@
+
+The command exited with code 0.
+Output:
+96k 200 2512656 audio/mp4
+160k 200 4230882 audio/mp4
+320k 200 8521381 audio/mp4
+

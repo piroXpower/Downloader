@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Tetris Block Master</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    body {
+      background: #0b0f19;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      touch-action: none;
+    }
+    .hud {
+      display: flex;
+      justify-content: space-between;
+      width: 90vw;
+      max-width: 320px;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    .badge {
+      background: #1e293b;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      color: #a855f7;
+    }
+    #tetris {
+      background: #111827;
+      border: 2px solid #374151;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+      width: 240px;
+      height: 440px;
+    }
+    .touch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 55px);
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .btn {
+      background: #1f2937;
+      border: 1px solid #4b5563;
+      color: #f3f4f6;
+      border-radius: 8px;
+      height: 48px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .btn:active { background: #374151; }
+    .btn-rotate { background: #7c3aed; color: #fff; border-color: #9333ea; }
+    .btn-drop { background: #059669; color: #fff; border-color: #10b981; }
+  </style>
+</head>
+<body>
+  <div class="hud">
+    <div class="badge">SCORE: <span id="score">0</span></div>
+    <div class="badge">LINES: <span id="lines">0</span></div>
+  </div>
+  <canvas id="tetris" width="240" height="440"></canvas>
+
+  <div class="touch-grid">
+    <button class="btn" onclick="move(-1)">◀</button>
+    <button class="btn" onclick="move(1)">▶</button>
+    <button class="btn btn-rotate" onclick="playerRotate(1)">🔄</button>
+    <button class="btn btn-drop" onclick="drop()">⬇</button>
+  </div>
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+    if (tg) tg.expand();
+
+    const canvas = document.getElementById('tetris');
+    const ctx = canvas.getContext('2d');
+    ctx.scale(20, 20); // 12x22 grid
+
+    const colors = [
+      null,
+      '#ef4444', // T
+      '#06b6d4', // I
+      '#f59e0b', // O
+      '#10b981', // S
+      '#a855f7', // Z
+      '#3b82f6', // J
+      '#ec4899'  // L
+    ];
+
+    function createPiece(type) {
+      if (type === 'I') return [[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]];
+      if (type === 'L') return [[0,2,0],[0,2,0],[0,2,2]];
+      if (type === 'J') return [[0,3,0],[0,3,0],[3,3,0]];
+      if (type === 'O') return [[4,4],[4,4]];
+      if (type === 'Z') return [[5,5,0],[0,5,5],[0,0,0]];
+      if (type === 'S') return [[0,6,6],[6,6,0],[0,0,0]];
+      if (type === 'T') return [[0,7,0],[7,7,7],[0,0,0]];
+    }
+
+    function createMatrix(w, h) {
+      const matrix = [];
+      while (h--) matrix.push(new Array(w).fill(0));
+      return matrix;
+    }
+
+    const arena = createMatrix(12, 22);
+    let score = 0;
+    let lines = 0;
+
+    const player = {
+      pos: {x: 0, y: 0},
+      matrix: null
+    };
+
+    function collide(arena, player) {
+      const [m, o] = [player.matrix, player.pos];
+      for (let y = 0; y < m.length; ++y) {
+        for (let x = 0; x < m[y].length; ++x) {
+          if (m[y][x] !== 0 && (arena[y + o.y] && arena[y + o.y][x + o.x]) !== 0) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    function merge(arena, player) {
+      player.matrix.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value !== 0) arena[y + player.pos.y][x + player.pos.x] = value;
+        });
+      });
+    }
+
+    function rotate(matrix, dir) {
+      for (let y = 0; y < matrix.length; ++y) {
+        for (let x = 0; x < y; ++x) {
+          [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
+        }
+      }
+      if (dir > 0) matrix.forEach(row => row.reverse());
+      else matrix.reverse();
+    }
+
+    function playerRotate(dir) {
+      const pos = player.pos.x;
+      let offset = 1;
+      rotate(player.matrix, dir);
+      while (collide(arena, player)) {
+        player.pos.x += offset;
+        offset = -(offset + (offset > 0 ? 1 : -1));
+        if (offset > player.matrix[0].length) {
+          rotate(player.matrix, -dir);
+          player.pos.x = pos;
+          return;
+        }
+      }
+      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+    }
+
+    function arenaSweep() {
+      let rowCount = 1;
+      outer: for (let y = arena.length - 1; y > 0; --y) {
+        for (let x = 0; x < arena[y].length; ++x) {
+          if (arena[y][x] === 0) continue outer;
+        }
+        const row = arena.splice(y, 1)[0].fill(0);
+        arena.unshift(row);
+        ++y;
+        score += rowCount * 100;
+        lines++;
+        rowCount *= 2;
+        if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+      }
+      document.getElementById('score').innerText = score;
+      document.getElementById('lines').innerText = lines;
+    }
+
+    function playerReset() {
+      const pieces = 'ILJOTSZ';
+      player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
+      player.pos.y = 0;
+      player.pos.x = (arena[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
+      if (collide(arena, player)) {
+        window.parent.postMessage({
+          type: 'SCORE_UPDATE',
+          gameId: 'game-tetris',
+          score: score
+        }, '*');
+        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+        alert(`Game Over! Score: ${score}`);
+        arena.forEach(row => row.fill(0));
+        score = 0; lines = 0;
+        document.getElementById('score').innerText = 0;
+        document.getElementById('lines').innerText = 0;
+      }
+    }
+
+    function move(dir) {
+      player.pos.x += dir;
+      if (collide(arena, player)) {
+        player.pos.x -= dir;
+      } else {
+        if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+      }
+    }
+
+    function drop() {
+      player.pos.y++;
+      if (collide(arena, player)) {
+        player.pos.y--;
+        merge(arena, player);
+        playerReset();
+        arenaSweep();
+      }
+      dropCounter = 0;
+    }
+
+    let dropCounter = 0;
+    let dropInterval = 800;
+    let lastTime = 0;
+
+    function drawMatrix(matrix, offset) {
+      matrix.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value !== 0) {
+            ctx.fillStyle = colors[value];
+            ctx.fillRect(x + offset.x, y + offset.y, 1, 1);
+            ctx.lineWidth = 0.05;
+            ctx.strokeStyle = '#000';
+            ctx.strokeRect(x + offset.x, y + offset.y, 1, 1);
+          }
+        });
+      });
+    }
+
+    function draw() {
+      ctx.fillStyle = '#111827';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      drawMatrix(arena, {x: 0, y: 0});
+      drawMatrix(player.matrix, player.pos);
+    }
+
+    function update(time = 0) {
+      const deltaTime = time - lastTime;
+      lastTime = time;
+      dropCounter += deltaTime;
+      if (dropCounter > dropInterval) {
+        drop();
+      }
+      draw();
+      requestAnimationFrame(update);
+    }
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') move(-1);
+      if (e.key === 'ArrowRight') move(1);
+      if (e.key === 'ArrowDown') drop();
+      if (e.key === 'ArrowUp') playerRotate(1);
+    });
+
+    playerReset();
+    update();
+  </script>
+</body>
+</html>

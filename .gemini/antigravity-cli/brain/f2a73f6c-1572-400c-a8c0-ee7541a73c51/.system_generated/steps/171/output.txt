@@ -1,0 +1,6 @@
+
+The command exited with code 0.
+Output:
+stream type: <class 'pytgcalls.types.stream.media_stream.MediaStream'>
+attrs: ['Flags', 'camera', 'check_stream', 'default', 'microphone', 'screen', 'speaker']
+

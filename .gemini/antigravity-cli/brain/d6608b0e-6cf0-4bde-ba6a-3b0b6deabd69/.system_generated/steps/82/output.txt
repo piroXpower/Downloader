@@ -1,0 +1,15 @@
+
+The command exited with code 0.
+Output:
+/root/venv/lib/python3.14/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+✓ Root index.html OK
+✓ /api/games returned total=1000, limit=5
+✓ Category filtering OK
+✓ Search for flappy found 7 games
+✓ All built-in mini games static files accessible OK
+✓ /api/score submission OK: {'status': 'success', 'is_new_high_score': True, 'recorded_score': 2500, 'game_id': 'game-space-blaster'}
+✓ /api/leaderboard OK: 2 leaders
+
+ALL FASTAPI INTEGRATION TESTS PASSED 100%!
+

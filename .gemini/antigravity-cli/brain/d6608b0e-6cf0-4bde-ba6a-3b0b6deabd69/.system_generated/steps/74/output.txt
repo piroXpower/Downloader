@@ -1,0 +1,10 @@
+
+The command exited with code 0.
+Output:
+Total cached games: 1000
+Categories count: 8
+Score record result: {'is_new_high_score': True, 'recorded_score': 1024, 'game_id': 'game-2048'}
+User stats: {'user_id': 12345, 'total_games_played': 0, 'total_score': 0, 'rank': '-'}
+Leaders: []
+ALL BACKEND TESTS PASSED!
+

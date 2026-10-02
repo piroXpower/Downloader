@@ -1,0 +1,10 @@
+
+The command exited with code 0.
+Output:
+MediaStream init signature: (self, media_path: str | pathlib.Path | pytgcalls.media_devices.input_device.InputDevice | pytgcalls.types.stream.external_media.ExternalMedia, audio_parameters: pytgcalls.types.raw.audio_parameters.AudioParameters | pytgcalls.types.stream.audio_quality.AudioQuality = <AudioQuality.HIGH: (48000, 2)>, video_parameters: pytgcalls.types.raw.video_parameters.VideoParameters | pytgcalls.types.stream.video_quality.VideoQuality = <VideoQuality.HD_720p: (1280, 720, 30)>, audio_path: str | pathlib.Path | pytgcalls.media_devices.input_device.InputDevice | pytgcalls.types.stream.external_media.ExternalMedia | None = None, audio_flags: pytgcalls.types.stream.media_stream.MediaStream.Flags | None = <Flags.AUTO_DETECT: 1>, video_flags: pytgcalls.types.stream.media_stream.MediaStream.Flags | None = <Flags.AUTO_DETECT: 1>, headers: dict[str, str] | None = None, ffmpeg_parameters: str | None = None, ytdlp_parameters: str | None = None)
+PyTgCalls.play signature: (self, chat_id: int | str, stream: str | pathlib.Path | pytgcalls.media_devices.input_device.InputDevice | pytgcalls.types.raw.stream.Stream | None = None, config: pytgcalls.types.calls.call_config.CallConfig | pytgcalls.types.calls.group_call_config.GroupCallConfig | None = None)
+PyTgCalls.pause signature: (self, chat_id: int | str) -> bool
+PyTgCalls.resume signature: (self, chat_id: int | str) -> bool
+PyTgCalls.leave_call signature: (self, chat_id: int | str, close: bool = False)
+PyTgCalls.change_volume_call signature: (self, chat_id: int | str, volume: int)
+

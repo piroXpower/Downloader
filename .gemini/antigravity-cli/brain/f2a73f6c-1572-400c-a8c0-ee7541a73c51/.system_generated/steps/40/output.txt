@@ -1,0 +1,7 @@
+
+The command exited with code 0.
+Output:
+pip 25.1.1 from /usr/lib/python3/dist-packages/pip (python 3.14)
+ffmpeg version 8.0.1-3ubuntu2 Copyright (c) 2000-2025 the FFmpeg developers
+built with gcc 15 (Ubuntu 15.2.0-13ubuntu3)
+
