@@ -1,7 +1,0 @@
-
-The command exited with code 0.
-Output:
-TgCrypto is missing! Pyrogram will work the same, but at a much slower speed. More info: https://docs.pyrogram.org/topics/speedups
-Pyrogram: 2.0.106
-PyTgCalls: 3.0.0
-

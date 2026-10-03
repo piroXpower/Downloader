@@ -1,8 +1,0 @@
-
-The command exited with code 0.
-Output:
-Found 10 results
-Title: Believer
-Artist: [{'id': '599452', 'name': 'Imagine Dragons', 'role': 'primary_artists', 'image': 'https://c.saavncdn.com/artists/Imagine_Dragons_150x150.jpg', 'type': 'artist', 'perma_url': 'https://www.jiosaavn.com/artist/imagine-dragons-songs/f0aFxsa231o_'}]
-Decrypted URL: https://aac.saavncdn.com/248/46944eb7b4b31f5b0abf5eb2e1be2d2a_96.mp4
-

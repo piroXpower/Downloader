@@ -1,5 +1,0 @@
-
-The command exited with code 0.
-Output:
-Exceptions: ['CallBusy', 'CallDeclined', 'CallDiscarded', 'ClientNotStarted', 'ConferenceChainNotReady', 'ImageSourceFound', 'InvalidMTProtoClient', 'InvalidVideoProportion', 'LiveStreamFound', 'MTProtoClientNotConnected', 'NoActiveGroupCall', 'NoAudioSourceFound', 'NoMTProtoClientSet', 'NoVideoSourceFound', 'NotInCallError', 'PyTgCallsAlreadyRunning', 'TimedOutAnswer', 'TooManyCustomApiDecorators', 'TooOldPyrogramVersion', 'TooOldTelethonVersion', 'UnsupportedMethod', 'YtDlpError']
-

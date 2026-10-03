@@ -1,6 +1,0 @@
-
-The command exited with code 0.
-Output:
-pytgcalls attributes: ['handlers']
-filters: ['AndFilter', 'BridgedClient', 'CUSTOM_FILTER_NAME', 'Callable', 'ChatUpdate', 'Device', 'Direction', 'Filter', 'GroupCallParticipant', 'InvertFilter', 'OrFilter', 'PyTgCalls', 'StreamEnded', 'StreamFrames', 'Update', 'UpdatedGroupCallParticipant', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', '_me_filter', 'call_participant', 'chat', 'chat_update', 'create', 'inspect', 'me', 'stream_end', 'stream_frame']
-

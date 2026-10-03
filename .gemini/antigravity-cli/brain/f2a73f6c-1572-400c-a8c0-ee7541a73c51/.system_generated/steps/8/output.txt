@@ -1,8 +1,0 @@
-
-The command exited with code 0.
-Output:
-/usr/bin/apt
-/usr/bin/apt-get
-/data/data/com.termux/files/usr/bin/pip
-/data/data/com.termux/files/usr/bin/pip3
-

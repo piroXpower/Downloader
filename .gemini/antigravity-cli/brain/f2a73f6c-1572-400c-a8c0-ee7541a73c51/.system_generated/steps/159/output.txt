@@ -1,8 +1,0 @@
-Task: f2a73f6c-1572-400c-a8c0-ee7541a73c51/task-157
-Status: DONE
-Log: /root/.gemini/antigravity-cli/brain/f2a73f6c-1572-400c-a8c0-ee7541a73c51/.system_generated/tasks/task-157.log
-Log output:
-Keys: ['id', 'type', 'song', 'album', 'year', 'music', 'music_id', 'primary_artists', 'primary_artists_id', 'featured_artists', 'featured_artists_id', 'singers', 'starring', 'image', 'label', 'albumid', 'language', 'origin', 'play_count', 'is_drm', 'copyright_text', '320kbps', 'is_dolby_content', 'explicit_content', 'has_lyrics', 'lyrics_snippet', 'has_trivia', 'trivia', 'encrypted_drm_media_url', 'encrypted_media_url', 'encrypted_media_path', 'media_preview_url', 'perma_url', 'album_url', 'duration', 'rights', 'webp', 'cache_state', 'starred', 'artistMap', 'release_date', 'vcode', 'vlink', 'triller_available', 'label_url', 'label_id']
-more_info keys: []
-
-Last progress: 8s ago

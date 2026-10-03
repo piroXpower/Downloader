@@ -1,5 +1,0 @@
-
-The command exited with code 0.
-Output:
-StreamEnded init: (self, chat_id: int, stream_type: pytgcalls.types.stream.stream_ended.StreamEnded.Type, device: pytgcalls.types.stream.device.Device)
-

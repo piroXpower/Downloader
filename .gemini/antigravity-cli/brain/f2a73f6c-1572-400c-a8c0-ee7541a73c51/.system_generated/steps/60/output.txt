@@ -1,7 +1,0 @@
-
-The command exited with code 1.
-Output:
-ERROR: Invalid requirement: 'ntgcalls==': Expected semicolon (after name with no version specifier) or end
-    ntgcalls==
-            ^
-
