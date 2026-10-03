@@ -33,7 +33,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-STATIC_DIR = Path("/root/omnitube/static")
+# Fixed: Dynamically resolve static directory relative to app.py for production compatibility
+STATIC_DIR = Path(__file__).parent / "static"
 STATIC_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
