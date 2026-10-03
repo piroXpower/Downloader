@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VidTube - Universal Video Platform & All-in-One Social Media Downloader</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff0000'><path d='M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z'/></svg>">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <!-- Remixicon for YouTube-exact icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body class="dark-theme">
+  <!-- Top Navigation Header -->
+  <header class="yt-header">
+    <div class="header-left">
+      <button class="icon-btn" id="sidebar-toggle" title="Guide">
+        <i class="ri-menu-line"></i>
+      </button>
+      <a href="#" class="yt-logo" id="logo-home">
+        <div class="logo-icon-wrap">
+          <i class="ri-play-fill logo-triangle"></i>
+        </div>
+        <span class="logo-text">VidTube</span>
+        <span class="logo-badge">DL</span>
+      </a>
+    </div>
+
+    <!-- Central Search & Downloader Input -->
+    <div class="header-center">
+      <form class="search-form" id="search-download-form">
+        <div class="search-input-wrapper">
+          <input 
+            type="text" 
+            id="url-search-input" 
+            placeholder="Search or paste link from YouTube, Instagram, Facebook, Twitter, Pinterest, Terabox..." 
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button type="button" class="btn-paste-shortcut" id="btn-quick-paste" title="Paste from clipboard">
+            <i class="ri-clipboard-line"></i>
+            <span>Paste</span>
+          </button>
+          <button type="button" class="clear-btn" id="btn-clear-search" style="display: none;">
+            <i class="ri-close-line"></i>
+          </button>
+        </div>
+        <button type="submit" class="search-btn" id="btn-search-submit" title="Analyze & Download">
+          <i class="ri-search-line"></i>
+        </button>
+      </form>
+      <button class="icon-btn voice-btn" id="btn-voice" title="Voice Search">
+        <i class="ri-mic-line"></i>
+      </button>
+    </div>
+
+    <div class="header-right">
+      <button class="btn-anti-bot" id="btn-open-anti-bot" title="Anti-Bot & Cookie Bypass Settings">
+        <i class="ri-shield-check-line"></i>
+        <span>Anti-Bot</span>
+        <span class="bot-dot" id="cookie-status-dot"></span>
+      </button>
+      <button class="btn-create" id="btn-open-downloader-modal" title="Direct URL Downloader">
+        <i class="ri-download-cloud-2-line"></i>
+        <span>Download</span>
+      </button>
+      <button class="icon-btn theme-toggle-btn" id="btn-theme-toggle" title="Toggle Dark/Light Mode">
+        <i class="ri-sun-line" id="theme-icon"></i>
+      </button>
+      <div class="notification-wrap">
+        <button class="icon-btn" id="btn-notifications" title="Notifications">
+          <i class="ri-notification-3-line"></i>
+          <span class="notification-badge" id="noti-count" style="display: none;">0</span>
+        </button>
+        <div class="notifications-dropdown" id="notifications-menu" style="display: none;">
+          <div class="dropdown-header">
+            <span>Notifications</span>
+            <button class="clear-noti-btn" id="btn-clear-noti">Clear</button>
+          </div>
+          <div class="notifications-list" id="notifications-list">
+            <div class="empty-noti">No new notifications</div>
+          </div>
+        </div>
+      </div>
+      <div class="user-avatar-wrap" id="user-menu-btn">
+        <img src="https://api.dicebear.com/7.x/identicon/svg?seed=VidTubeMaster" alt="User" class="user-avatar">
+      </div>
+    </div>
+  </header>
+
+  <!-- Main App Layout -->
+  <div class="app-layout">
+    <!-- Left Sidebar -->
+    <aside class="yt-sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <a href="#" class="sidebar-item active" data-view="home">
+          <i class="ri-home-5-fill"></i>
+          <span>Home</span>
+        </a>
+        <a href="#" class="sidebar-item" data-view="shorts">
+          <i class="ri-fire-fill"></i>
+          <span>Shorts & Reels</span>
+        </a>
+        <a href="#" class="sidebar-item" data-view="downloads">
+          <i class="ri-download-2-fill"></i>
+          <span>Downloads</span>
+          <span class="sidebar-counter" id="active-dl-badge" style="display: none;">0</span>
+        </a>
+        <a href="#" class="sidebar-item" data-view="platforms">
+          <i class="ri-apps-2-line"></i>
+          <span>Platforms</span>
+        </a>
+      </div>
+
+      <hr class="sidebar-divider">
+
+      <div class="sidebar-heading">SUPPORTED PLATFORMS</div>
+      <div class="sidebar-section platforms-quick-filter">
+        <button class="sidebar-item platform-filter-btn" data-platform="YouTube">
+          <i class="ri-youtube-fill" style="color: #ff0000;"></i>
+          <span>YouTube</span>
+        </button>
+        <button class="sidebar-item platform-filter-btn" data-platform="Instagram">
+          <i class="ri-instagram-fill" style="color: #e1306c;"></i>
+          <span>Instagram</span>
+        </button>
+        <button class="sidebar-item platform-filter-btn" data-platform="Facebook">
+          <i class="ri-facebook-circle-fill" style="color: #1877f2;"></i>
+          <span>Facebook</span>
+        </button>
+        <button class="sidebar-item platform-filter-btn" data-platform="Twitter">
+          <i class="ri-twitter-x-fill"></i>
+          <span>Twitter / X</span>
+        </button>
+        <button class="sidebar-item platform-filter-btn" data-platform="Pinterest">
+          <i class="ri-pinterest-fill" style="color: #e60023;"></i>
+          <span>Pinterest</span>
+        </button>
+        <button class="sidebar-item platform-filter-btn" data-platform="Terabox">
+          <i class="ri-cloud-fill" style="color: #0084ff;"></i>
+          <span>Terabox Cloud</span>
+        </button>
+        <button class="sidebar-item platform-filter-btn" data-platform="TikTok">
+          <i class="ri-tiktok-fill"></i>
+          <span>TikTok</span>
+        </button>
+      </div>
+
+      <hr class="sidebar-divider">
+
+      <div class="sidebar-heading">YOU</div>
+      <div class="sidebar-section">
+        <a href="#" class="sidebar-item" id="nav-history">
+          <i class="ri-history-line"></i>
+          <span>History</span>
+        </a>
+        <a href="#" class="sidebar-item" id="nav-liked">
+          <i class="ri-thumb-up-line"></i>
+          <span>Liked Videos</span>
+        </a>
+        <a href="#" class="sidebar-item" id="nav-watch-later">
+          <i class="ri-time-line"></i>
+          <span>Watch Later</span>
+        </a>
+      </div>
+
+      <div class="sidebar-footer">
+        <p>VidTube Universal Engine v2.0</p>
+        <p>Supports 1,000+ Video Sources</p>
+      </div>
+    </aside>
+
+    <!-- Content Area -->
+    <main class="yt-main" id="main-content">
+      <!-- VIEW 1: HOME FEED -->
+      <section class="view-panel active" id="view-home">
+        <!-- Filter Chips Bar -->
+        <div class="filter-chips-bar" id="category-chips">
+          <button class="chip active" data-category="All">All</button>
+          <button class="chip" data-category="Trending">Trending</button>
+          <button class="chip" data-category="YouTube 4K">YouTube 4K</button>
+          <button class="chip" data-category="Instagram Reels">Instagram Reels</button>
+          <button class="chip" data-category="Twitter Clips">Twitter / X Clips</button>
+          <button class="chip" data-category="Facebook Watch">Facebook Watch</button>
+          <button class="chip" data-category="Pinterest Video">Pinterest Pins</button>
+          <button class="chip" data-category="Terabox Files">Terabox Files</button>
+          <button class="chip" data-category="TikTok Viral">TikTok Viral</button>
+          <button class="chip" data-category="Music / MP3">Music & MP3</button>
+        </div>
+
+        <!-- Universal Downloader Hero Banner -->
+        <div class="universal-hero-banner">
+          <div class="hero-content">
+            <div class="hero-badge">
+              <i class="ri-flashlight-fill"></i> ALL-IN-ONE MEDIA EXTRACTOR
+            </div>
+            <h1 class="hero-title">Download Any Video from Any Social Media</h1>
+            <p class="hero-subtitle">
+              Paste video URLs from YouTube, Instagram Reels, Facebook, Twitter (X), Pinterest, Terabox, TikTok & more. Watch inside VidTube or save in 4K, 1080p, 720p or MP3 Audio!
+            </p>
+            <div class="hero-input-box">
+              <i class="ri-link-m hero-link-icon"></i>
+              <input 
+                type="text" 
+                id="hero-url-input" 
+                placeholder="Paste Instagram, YouTube, Facebook, Twitter, Pinterest, or Terabox link..."
+              >
+              <button class="hero-paste-btn" id="hero-paste-btn">
+                <i class="ri-clipboard-line"></i>
+                Paste
+              </button>
+              <button class="hero-fetch-btn" id="hero-fetch-btn">
+                <i class="ri-download-line"></i>
+                <span>Fetch Video</span>
+              </button>
+            </div>
+            <!-- Supported Platform Quick Badges -->
+            <div class="hero-platforms">
+              <span class="hero-plat-label">Quick Test / Copy Links:</span>
+              <button class="plat-tag" data-sample="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                <i class="ri-youtube-fill" style="color: #ff0000;"></i> YouTube
+              </button>
+              <button class="plat-tag" data-sample="https://www.instagram.com/reel/C_example_shinjuku/">
+                <i class="ri-instagram-fill" style="color: #e1306c;"></i> Instagram
+              </button>
+              <button class="plat-tag" data-sample="https://x.com/tech/status/1838000000000000000">
+                <i class="ri-twitter-x-fill"></i> Twitter / X
+              </button>
+              <button class="plat-tag" data-sample="https://www.facebook.com/watch/?v=987654321098765">
+                <i class="ri-facebook-circle-fill" style="color: #1877f2;"></i> Facebook
+              </button>
+              <button class="plat-tag" data-sample="https://www.pinterest.com/pin/123456789012345678/">
+                <i class="ri-pinterest-fill" style="color: #e60023;"></i> Pinterest
+              </button>
+              <button class="plat-tag" data-sample="https://terabox.com/s/1patagonia_nature_4k">
+                <i class="ri-cloud-fill" style="color: #0084ff;"></i> Terabox
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video Grid Feed -->
+        <div class="video-grid" id="video-feed-grid">
+          <!-- Populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- VIEW 2: YOUTUBE WATCH PAGE (/watch) -->
+      <section class="view-panel" id="view-watch">
+        <div class="watch-layout">
+          <!-- Primary Player Column -->
+          <div class="watch-primary">
+            <!-- Video Player Screen -->
+            <div class="player-container" id="player-container">
+              <video id="html5-video-player" class="video-screen" controls playsinline></video>
+              <div class="player-placeholder" id="player-placeholder" style="display: none;">
+                <img id="placeholder-thumbnail" src="" alt="Thumbnail">
+                <div class="placeholder-overlay">
+                  <button class="btn-play-trigger" id="btn-play-placeholder">
+                    <i class="ri-play-fill"></i>
+                  </button>
+                  <p id="placeholder-msg">Click Play or Download Formats</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Video Header Info -->
+            <div class="video-details-header">
+              <div class="watch-platform-badge" id="watch-platform-tag">
+                <i class="ri-youtube-fill"></i> YouTube
+              </div>
+              <h1 class="watch-title" id="watch-title">Video Title Loading...</h1>
+            </div>
+
+            <!-- Author & Action Bar -->
+            <div class="watch-action-bar">
+              <div class="channel-info-row">
+                <img src="" alt="Avatar" class="channel-avatar" id="watch-channel-avatar">
+                <div class="channel-text">
+                  <div class="channel-name" id="watch-channel-name">Channel Name</div>
+                  <div class="channel-subs" id="watch-channel-subs">1.45M subscribers</div>
+                </div>
+                <button class="btn-subscribe" id="btn-subscribe">Subscribe</button>
+              </div>
+
+              <!-- Action Pills -->
+              <div class="video-actions-pills">
+                <div class="like-dislike-pill">
+                  <button class="action-btn like-btn" id="btn-like">
+                    <i class="ri-thumb-up-line"></i>
+                    <span id="watch-likes">120K</span>
+                  </button>
+                  <div class="pill-divider"></div>
+                  <button class="action-btn dislike-btn" id="btn-dislike">
+                    <i class="ri-thumb-down-line"></i>
+                  </button>
+                </div>
+
+                <button class="action-btn" id="btn-share">
+                  <i class="ri-share-forward-line"></i>
+                  <span>Share</span>
+                </button>
+
+                <!-- PROMINENT DOWNLOAD ACTION -->
+                <button class="action-btn btn-highlight-download" id="btn-watch-download">
+                  <i class="ri-download-cloud-fill"></i>
+                  <span>Download</span>
+                </button>
+
+                <button class="action-btn" id="btn-save-playlist">
+                  <i class="ri-play-list-add-line"></i>
+                  <span>Save</span>
+                </button>
+
+                <button class="icon-btn" id="btn-more-options">
+                  <i class="ri-more-fill"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Expandable Video Description -->
+            <div class="video-description-box" id="desc-box">
+              <div class="desc-stats">
+                <span id="watch-views-count">1,245,670 views</span>
+                <span id="watch-upload-date">Oct 2, 2026</span>
+                <span class="desc-tags">#trending #viral #vidtube</span>
+              </div>
+              <div class="desc-content-text" id="watch-description-text">
+                Video description will appear here...
+              </div>
+              <button class="btn-toggle-desc" id="btn-toggle-desc">Show more</button>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="comments-section">
+              <div class="comments-header">
+                <h3 id="comments-count-title">342 Comments</h3>
+                <button class="btn-sort-comments">
+                  <i class="ri-sort-desc"></i>
+                  <span>Sort by</span>
+                </button>
+              </div>
+
+              <!-- Add Comment Input Box -->
+              <div class="add-comment-row">
+                <img src="https://api.dicebear.com/7.x/identicon/svg?seed=VidTubeMaster" alt="You" class="my-comment-avatar">
+                <div class="comment-input-wrap">
+                  <input type="text" id="new-comment-input" placeholder="Add a public comment...">
+                  <div class="comment-actions" id="comment-actions-bar" style="display: none;">
+                    <button class="btn-cancel-comment" id="btn-cancel-comment">Cancel</button>
+                    <button class="btn-submit-comment" id="btn-submit-comment">Comment</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Comments List -->
+              <div class="comments-list" id="comments-list">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Secondary Up Next / Related Column -->
+          <div class="watch-secondary">
+            <h3 class="related-heading">Up Next</h3>
+            <div class="related-list" id="related-videos-list">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 3: SHORTS & REELS VIEW -->
+      <section class="view-panel" id="view-shorts">
+        <div class="shorts-container" id="shorts-container">
+          <div class="shorts-reel active">
+            <div class="reel-media-wrapper">
+              <video class="reel-video" loop playsinline src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"></video>
+              <div class="reel-controls-overlay">
+                <button class="reel-play-btn"><i class="ri-play-fill"></i></button>
+              </div>
+              <!-- Reel Info at bottom -->
+              <div class="reel-bottom-info">
+                <div class="reel-author">
+                  <img src="https://api.dicebear.com/7.x/identicon/svg?seed=tokyoreel" alt="Avatar">
+                  <span>@tokyo_wanderlust</span>
+                  <button class="btn-sub-mini">Subscribe</button>
+                </div>
+                <p class="reel-caption">Night walk through the neon alleys of Shinjuku #tokyo #cinematic #reel</p>
+                <div class="reel-sound">
+                  <i class="ri-music-2-line"></i>
+                  <span>Original Audio - Tokyo Ambient Beat</span>
+                </div>
+              </div>
+            </div>
+            <!-- Reel Side Action Buttons -->
+            <div class="reel-side-actions">
+              <button class="reel-action-btn like">
+                <i class="ri-thumb-up-fill"></i>
+                <span>428K</span>
+              </button>
+              <button class="reel-action-btn dislike">
+                <i class="ri-thumb-down-fill"></i>
+                <span>Dislike</span>
+              </button>
+              <button class="reel-action-btn comments">
+                <i class="ri-chat-3-fill"></i>
+                <span>3.2K</span>
+              </button>
+              <button class="reel-action-btn share">
+                <i class="ri-share-forward-fill"></i>
+                <span>Share</span>
+              </button>
+              <!-- DIRECT DOWNLOAD REEL BUTTON -->
+              <button class="reel-action-btn reel-download-btn" title="Download Reel in HD">
+                <i class="ri-download-cloud-fill" style="color: #ff0000;"></i>
+                <span>Download</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 4: DOWNLOADS MANAGER -->
+      <section class="view-panel" id="view-downloads">
+        <div class="downloads-page-header">
+          <div>
+            <h2>Downloads Manager</h2>
+            <p>Manage all your downloaded videos, files, and high-quality MP3 audio.</p>
+          </div>
+          <button class="btn-new-download" id="btn-downloads-page-new">
+            <i class="ri-add-line"></i>
+            <span>New Download</span>
+          </button>
+        </div>
+
+        <div class="downloads-table-container">
+          <div class="downloads-empty-state" id="downloads-empty" style="display: none;">
+            <i class="ri-inbox-archive-line"></i>
+            <h3>No downloads yet</h3>
+            <p>Paste any video link above to download in 4K, 1080p, or MP3!</p>
+          </div>
+          <div class="downloads-list" id="downloads-tasks-list">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 5: SUPPORTED PLATFORMS DIRECTORY -->
+      <section class="view-panel" id="view-platforms">
+        <div class="platforms-page-header">
+          <h2>Universal Supported Platforms</h2>
+          <p>VidTube supports downloading videos, clips, reels, pins, and files from 1,000+ sources without watermarks.</p>
+        </div>
+        <div class="platforms-grid" id="platforms-grid">
+          <!-- Populated via JS -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- UNIVERSAL DOWNLOAD & FORMAT PICKER MODAL -->
+  <div class="modal-backdrop" id="download-modal" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i class="ri-download-cloud-2-line"></i>
+          <h3>Download Media Formats</h3>
+        </div>
+        <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Loading State -->
+        <div class="modal-loader" id="modal-loader" style="display: none;">
+          <div class="spinner"></div>
+          <p>Analyzing link & extracting video qualities from source...</p>
+        </div>
+
+        <!-- Error State -->
+        <div class="modal-error" id="modal-error" style="display: none;">
+          <i class="ri-error-warning-line"></i>
+          <p id="modal-error-msg">Failed to extract video.</p>
+          <div style="display: flex; gap: 8px; justify-content: center; margin-top: 14px; flex-wrap: wrap;">
+            <button class="btn-retry" id="btn-modal-retry">Try Again</button>
+            <button class="btn-fix-bot" id="btn-fix-bot-modal" style="display: none;">
+              <i class="ri-shield-keyhole-line"></i>
+              <span>Fix Bot Check (Anti-Bot Manager)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Content Info -->
+        <div class="modal-content-details" id="modal-details" style="display: none;">
+          <div class="media-preview-card">
+            <div class="preview-thumb-wrap">
+              <img id="modal-thumb" src="" alt="Thumbnail">
+              <span class="preview-duration" id="modal-duration">0:00</span>
+              <span class="preview-platform-tag" id="modal-platform-badge">YouTube</span>
+            </div>
+            <div class="preview-meta">
+              <h4 id="modal-title">Video Title</h4>
+              <p class="preview-author" id="modal-uploader">Channel Name</p>
+              <div class="preview-stats">
+                <span id="modal-views">-- views</span> • <span id="modal-likes">-- likes</span>
+              </div>
+              <button class="btn-watch-in-player" id="btn-modal-watch">
+                <i class="ri-play-fill"></i>
+                <span>Watch in VidTube Player</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Tabs: Video Formats vs Audio Formats -->
+          <div class="format-tabs">
+            <button class="format-tab-btn active" data-tab="video">
+              <i class="ri-film-line"></i>
+              <span>Video (MP4)</span>
+            </button>
+            <button class="format-tab-btn" data-tab="audio">
+              <i class="ri-music-2-line"></i>
+              <span>Audio Only (MP3)</span>
+            </button>
+          </div>
+
+          <!-- Video Options Tab -->
+          <div class="format-tab-content active" id="tab-video-formats">
+            <div class="formats-list" id="video-formats-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Audio Options Tab -->
+          <div class="format-tab-content" id="tab-audio-formats">
+            <div class="formats-list" id="audio-formats-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Live Download Progress Box -->
+          <div class="download-progress-box" id="download-progress-box" style="display: none;">
+            <div class="progress-info-row">
+              <span class="progress-status-label" id="progress-status-label">Downloading video...</span>
+              <span class="progress-percent" id="progress-percent">0%</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+            <div class="progress-sub-info">
+              <span id="progress-speed">Speed: --</span>
+              <span id="progress-eta">ETA: --</span>
+            </div>
+            <div class="progress-complete-actions" id="progress-complete-actions" style="display: none;">
+              <a href="#" class="btn-save-disk" id="btn-save-disk" download>
+                <i class="ri-save-line"></i>
+                <span>Save to Computer</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANTI-BOT & COOKIE SETTINGS MODAL -->
+  <div class="modal-backdrop" id="anti-bot-modal" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i class="ri-shield-keyhole-fill" style="color: #4caf50;"></i>
+          <h3>Anti-Bot & Cookie Manager</h3>
+        </div>
+        <button class="modal-close-btn" id="anti-bot-close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="anti-bot-guide">
+          <div class="bot-info-card">
+            <div class="bot-info-header">
+              <i class="ri-information-line"></i>
+              <strong>Why does "Sign in to confirm you are not a bot" happen?</strong>
+            </div>
+            <p>
+              YouTube actively challenges server/datacenter IPs with automated bot verifications. VidTube automatically uses <strong>Android, iOS, and Mobile Web client profiles</strong> to bypass this without needing a login.
+            </p>
+            <p style="margin-top: 6px;">
+              For high-security, age-restricted, or member videos, you can import your YouTube browser cookies once to achieve <strong>100% permanent bypass</strong>.
+            </p>
+          </div>
+
+          <div class="bot-status-bar">
+            <span>Current Status:</span>
+            <span class="bot-status-tag" id="anti-bot-status-tag">Checking...</span>
+          </div>
+
+          <div class="bot-steps">
+            <h4>Quick 30-Second Setup:</h4>
+            <ol>
+              <li>In your browser (Chrome/Edge/Firefox), install the extension <strong>"Get cookies.txt LOCALLY"</strong>.</li>
+              <li>Open <code>youtube.com</code> (make sure you can watch videos normally).</li>
+              <li>Click the extension icon & click <strong>"Export"</strong> to copy your cookies.</li>
+              <li>Paste the contents below or upload your <code>cookies.txt</code> file and click <strong>Save Cookies</strong>.</li>
+            </ol>
+          </div>
+
+          <div class="cookie-input-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label for="cookies-textarea" style="font-size: 13px; font-weight: 600;">Paste Netscape cookies.txt content:</label>
+              <input type="file" id="cookie-file-input" accept=".txt" style="display: none;">
+              <button type="button" class="btn-upload-cookie-file" id="btn-trigger-cookie-file">
+                <i class="ri-upload-2-line"></i> Upload cookies.txt
+              </button>
+            </div>
+            <textarea 
+              id="cookies-textarea" 
+              class="cookies-textarea" 
+              placeholder="# Netscape HTTP Cookie File&#10;.youtube.com&#9;TRUE&#9;/&#9;TRUE&#9;1735689600&#9;VISITOR_INFO1_LIVE&#9;...&#10;.youtube.com&#9;TRUE&#9;/&#9;TRUE&#9;1735689600&#9;LOGIN_INFO&#9;..."
+              spellcheck="false"
+            ></textarea>
+          </div>
+
+          <div class="bot-actions-row">
+            <button class="btn-clear-cookies" id="btn-clear-cookies">
+              <i class="ri-delete-bin-line"></i> Clear Cookies
+            </button>
+            <button class="btn-save-cookies" id="btn-save-cookies">
+              <i class="ri-check-line"></i> Save & Activate Cookies
+            </button>
+          </div>
+
+          <!-- PROXY SECTION -->
+          <div class="proxy-input-section" style="margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--yt-border);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label for="proxy-input" style="font-size: 13px; font-weight: 600;">🌐 Optional Proxy (HTTP / SOCKS5):</label>
+              <span id="proxy-status-badge" style="font-size: 11px; color: var(--yt-text-secondary);">No proxy</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <input 
+                type="text" 
+                id="proxy-input" 
+                placeholder="http://user:pass@host:port or socks5://host:port"
+                style="flex: 1; background: var(--yt-bg); border: 1px solid var(--yt-border); border-radius: 8px; color: var(--yt-text-primary); padding: 8px 12px; font-size: 13px; outline: none;"
+              >
+              <button type="button" class="btn-save-proxy" id="btn-save-proxy" style="background: var(--yt-surface-hover); border: 1px solid var(--yt-border); color: var(--yt-text-primary); border-radius: 8px; padding: 0 14px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                Save
+              </button>
+              <button type="button" class="btn-clear-proxy" id="btn-clear-proxy" style="background: none; border: 1px solid var(--yt-border); color: #ff4d4d; border-radius: 8px; padding: 0 10px; font-size: 12px; cursor: pointer;">
+                ✕
+              </button>
+            </div>
+            <p style="font-size: 11px; color: var(--yt-text-secondary); margin-top: 5px;">
+              Only needed if your cloud server / VPS IP is completely banned by YouTube.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
